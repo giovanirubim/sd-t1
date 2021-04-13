@@ -4,7 +4,7 @@ const inspect = require('./inspect');
 
 const endpointMap = {};
 const getEndpoint = (method, url) => {
-	return method.toUpperCase() + ' ' + url.replace(/[?#].*/, '');
+	return method.toUpperCase() + ' ' + url.replace(/[?#].*/, '').replace(/\/$/, '');
 };
 
 const messages = [];
@@ -16,6 +16,7 @@ const add = (method, url, handler) => {
 
 const get = (url, handler) => add('get', url, handler);
 const post = (url, handler) => add('post', url, handler);
+const del = (url, handler) => add('delete', url, handler);
 
 post('/api/messages', async (req, res) => {
 	const body = await parseBody(req);
@@ -30,7 +31,14 @@ get('/api/messages', (req, res) => {
 
 get('/api/http-messages', async (req, res) => {
 	req.ignore_request = true;
-	res.json(await inspect.get());
+	const query = parseQuery(req);
+	res.json(await inspect.get(query));
+});
+
+post('/api/clear', (req, res) => {
+	inspect.clear();
+	messages.length = [];
+	res.send({ status: 200 });
 });
 
 module.exports = (req, res, next) => {

@@ -1,9 +1,11 @@
 const parseBody = require('./parse-body');
 const getCharset = require('./get-charset');
 const messages = [];
+// const pageSize = 15;
 
 function inspect(req, res) {
-	const msg = { req, res };
+	const time = Date.now();
+	const msg = { time, req, res };
 	res.send = function ({ status, headers, body }) {
 		msg.res.data = { status, headers, body };
 		this.writeHead(status, headers);
@@ -56,8 +58,9 @@ function parseRes(res) {
 	return { header, body };
 }
 
-function parseMessage({ req, res }) {
+function parseMessage({ time, req, res }) {
 	return {
+		time,
 		endpoint: req.method + ' ' + req.url,
 		req: parseReq(req),
 		res: parseRes(res),
@@ -66,11 +69,20 @@ function parseMessage({ req, res }) {
 
 module.exports = inspect;
 
-module.exports.get = async (skip = 0) => {
-	const array = [];
-	const src = messages.slice(skip);
-	for (let msg of src) {
-		array.push(parseMessage(msg));
-	}
-	return array;
+module.exports.get = async ({ time }) => {
+	// const nPages = Math.ceil(messages.length/pageSize);
+	// const last = nPages - 1;
+	// const pageIndex = Math.min(last, Math.max(0, page));
+	// const a = page*pageSize;
+	// const b = a + pageSize - 1;
+	// return {
+	// 	nPages,
+	// 	pageIndex: page,
+	// 	messages: messages.slice(a, b).map(parseMessage),
+	// };
+	return messages.filter((msg) => msg.time > time).map(parseMessage);
+};
+
+module.exports.clear = () => {
+	messages.length = 0;
 };

@@ -1,6 +1,10 @@
 * {
 	font-family: monospace;
 }
+li {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
 #messages {
 	position: absolute;
 	left: 0px;
@@ -45,7 +49,40 @@
 	cursor: pointer;
 	color: #07f;
 }
-.http-msg div.req,
-.http-msg div.res, {
-	
+.http-msg .content {
+	background-color: #fff;
+	padding: 5px 0px 0px 5px;
+	margin-top: 5px;
+	border: 1px solid #aaa;
+	border-radius: 2px;	
+}
+.http-msg .content .req,
+.http-msg .content .res {
+	margin: 0px 5px 5px 0px;
+}
+.http-msg .content .req .block,
+.http-msg .content .res .block {
+	padding: 10px;
+	display: inline-block;
+	overflow-wrap: break-word;
+	text-align: left;
+	max-width: calc(100% - 20px);
+}
+.http-msg .content .req {
+	text-align: left;
+}
+.http-msg .content .res {
+	text-align: right;
+}
+.http-msg .content .req .block {
+	background-color: #cdc;
+}
+.http-msg .content .res .block {
+	background-color: #ccd;
+}
+.hidden {
+	display: none;
+}
+.pagination {
+	text-align: center;
 }
