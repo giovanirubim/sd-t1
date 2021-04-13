@@ -1,0 +1,51 @@
+* {
+	font-family: monospace;
+}
+#messages {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 42px;
+	background-color: #333944;
+}
+#messages .msg {
+	margin: 10px auto;
+	background-color: #024;
+	color: #fff;
+	padding: 20px;
+	max-width: 400px;
+}
+#panel {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	background-color: #ddd;
+	padding: 10px 10px 0px 10px;
+	height: 32px;
+}
+#panel input[type="button"] {
+	width: 70px;
+	float: right;
+}
+#panel input[type="text"] {
+	width: calc(100% - 85px);
+	float: left;
+}
+.http-msg {
+	background-color: #ddd;
+	padding: 5px 7px;
+	margin-bottom: 5px;
+	border: 1px solid #bbb;
+	border-radius: 2px;
+}
+.http-msg .button {
+	text-decoration: underline;
+	cursor: pointer;
+	color: #07f;
+}
+.http-msg div.req,
+.http-msg div.res, {
+	
+}

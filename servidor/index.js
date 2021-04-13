@@ -7,6 +7,9 @@ const fs = require('fs');
 // Módulo para lidar com caminhos de arquivos
 const path = require('path');
 
+// Módulo para inspecionar as mensagens http
+const inspect = require('./inspect');
+
 // Diretório raiz do projeto
 const currentDir = __dirname;
 
@@ -14,10 +17,20 @@ const currentDir = __dirname;
 const webDir = path.join(currentDir, 'web-dir');
 
 // Porta do servidor
-const port = 80;
+const port = process.env.PORT || 80;
+
+// Função para o envio de resposta
+function send({ status, headers, body }) {
+	console.log('teste')
+	this.writeHead(status, headers);
+	if (body) {
+		this.write(body);
+	}
+	this.end();
+};
 
 // Função que lida com cada nova requisição
-function httpMessageHandler(request, response) {
+function handleFileRequest(request, response) {
 
 	// URL da requisição
 	let url = request.url;
@@ -28,12 +41,16 @@ function httpMessageHandler(request, response) {
 	// Caminho completo do arquivo
 	let pathName = path.join(webDir, filePath);
 
+	// Caso seja um caminho de diretório direciona o acesso ao arquivo padrão
+	if (/[\\\/]$/.test(pathName)) {
+		pathName += 'index.html';
+	}
+
 	try {
 
 		// Se o arquivo não existe ou é um diretório responde com o código de status 404 (Not found)
 		if (!fs.existsSync(pathName) || fs.lstatSync(pathName).isDirectory()) {
-			response.writeHead(404);
-			response.end();
+			response.send({ status: 404 });
 			return;
 		}
 
@@ -44,27 +61,43 @@ function httpMessageHandler(request, response) {
 		const type = getMime(pathName);
 
 		// Responde com código de status 200
-		response.writeHead(200, {
-			'content-type': type,
-			'content-length': buffer.length
+		response.send({
+			status: 200,
+			headers: {
+				'content-type': type,
+				'content-length': buffer.length
+			},
+			body: buffer
 		});
 		
-		// Envia o conteúdo do arquivo no body
-		response.write(buffer);
-		response.end();
-
 	} catch(error) {
 
 		// Responde com código 500 (Erro interno do servidor)
-		response.writeHead(500);
-		response.end();
-
+		response.send({ status: 500 });
 		console.error(error);
 	}
 }
 
+// Middleware web-api
+const api = require('./api');
+
 // Cria servidor
-const server = http.createServer(httpMessageHandler);
+const server = http.createServer(function(request, response) {
+
+	// Adiciona o método send no objeto de response
+	response.send = send;
+
+	// Monitora as mensagens HTTP
+	inspect(request, response);
+
+	// Verifica se a requisição é para uma chamada da API
+	api(request, response, () => {
+
+		// Se a requisição não for tratada pelas chamadas de API considera uma requisição de arquivo
+		handleFileRequest(request, response);
+
+	});
+});
 
 // Inicia servidor na porta especificada
 console.log('Port: ' + port);
@@ -75,13 +108,17 @@ server.listen(port, function() {
 
 // Recebe um caminho de arquivo e retorna o content-type correspondente
 function getMime(filePath) {
+
 	const extension = filePath
 		.replace(/^.*\//, '')
 		.replace(/^.*\./, '')
 		.toLowerCase();
+	
 	switch (extension) {
-		case 'html': return 'text/html';
-		case 'js': return 'application/javascript';
+		case 'html': return 'text/html; charset=utf-8';
+		case 'js': return 'application/javascript; charset=utf-8';
+		case 'css': return 'text/css; charset=utf-8';
 	}
+
 	return 'application/octet-stream';
 }
