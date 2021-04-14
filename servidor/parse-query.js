@@ -1,11 +1,11 @@
 const Url = require('url');
 
 module.exports = (req) => {
-	if (req.parsed_query !== undefined) {
-		return req.parsed_query;
+	if (req.query !== undefined) {
+		return req.query;
 	}
 	let { url } = req;
 	let query = Url.parse(url, true).query;
-	req.parsed_query = query;
+	req.query = query;
 	return query;
 };
