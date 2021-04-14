@@ -1,4 +1,4 @@
-let time = 0;
+let time = Date.now();
 
 function div() {
 	return $(document.createElement('div'));
@@ -55,6 +55,9 @@ function addMsg(msg) {
 	});
 }
 
+function clear() {
+	$('.http-msg').remove();
+}
 
 async function more() {
 	let array = await $.get('/api/http-messages?time=' + time);
@@ -65,6 +68,8 @@ async function more() {
 }
 
 $(document).ready(async function(){
-	$('#clear').on('click', () => $('.http-msg').remove());
-	$('#more').on('click', more);
+	$('#more').on('click', () => {
+		clear();
+		more();
+	});
 });
