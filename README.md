@@ -5,6 +5,7 @@ Um servidor web (ou *web server*) é um servidor que faz uso do protocolo **HTTP
 ## Protocolo HTTP/HTTPS
 
 HTTP é um protocolo da camada de aplicação que utiliza na camada de transporte o protocolo TCP ou UDP, dependendo da versão.
+HTTPS é uma extensão do protocolo HTTP que acrescenta o protocolo SSL ou o protocolo TSL como camada de segurança.
 Numa conexão HTTP o fluxo de informação se dá através da troca de **mensagens HTTP**.
 As mensagens HTTP possuem uma sintaxe textual e são utilizadas em pares de **mensagem de requisição** e **mensagem de resposta**.
 Mensagens de requisição podem ser utilizadas para consultar um recurso ou iniciar alguma ação na outra ponta da conexão.
@@ -30,8 +31,10 @@ A renderização da interface a partir de um arquivo HTML acontece no lado clien
 É também comum a presença de arquivos do tipo **CSS** e **JavaScript**.
 Arquivos CSS especificam regras de apresentação que serão aplicadas aos elementos HTML.
 Arquivos JavaScript são códigos fontes que interagem com os elementos HTML, com o browser e até mesmo com o servidor web ou outros servidores.
+Em websites o browser utiliza requisições GET para consultar os arquivos do servidor utilizando a URI da requisição como caminho do arquivo.
 Websites que contam apenas com estes tipos de arquivos não recebem informações dos usuários e toda mudança de estado no website deve ser feita por meios manuais no servidor.
 Para permitir que o website seja também um sistema dinâmico muitos servidores permitem a integração do conteúdo HTML com alguma linguagem de programação como Java ou PHP onde os arquivos fonte não são visíveis ao cliente mas sua execução, provocada por requisições, constroem arquivos com um conteúdo HTML que são enviados como resposta.
+Este tipo de solução atualmente conta com inúmeras opções de softwares que compilam todos estes recursos necessários, como por exemplo o **XAMPP**, que utiliza para o servidor HTTP/HTTPS uma distribuição **Apache**, permite scripts de PHP e Perl para o desenvolvimento do sistema e trás também o sistema de gerenciamento de banco de dados MariaDB.
 
 ## APIs Web
 
