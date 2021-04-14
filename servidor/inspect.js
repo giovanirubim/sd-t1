@@ -1,7 +1,6 @@
 const parseBody = require('./parse-body');
 const getCharset = require('./get-charset');
 const messages = [];
-// const pageSize = 15;
 
 function inspect(req, res) {
 	const time = Date.now();
@@ -70,16 +69,6 @@ function parseMessage({ time, req, res }) {
 module.exports = inspect;
 
 module.exports.get = async ({ time }) => {
-	// const nPages = Math.ceil(messages.length/pageSize);
-	// const last = nPages - 1;
-	// const pageIndex = Math.min(last, Math.max(0, page));
-	// const a = page*pageSize;
-	// const b = a + pageSize - 1;
-	// return {
-	// 	nPages,
-	// 	pageIndex: page,
-	// 	messages: messages.slice(a, b).map(parseMessage),
-	// };
 	return messages.filter((msg) => msg.time > time).map(parseMessage);
 };
 

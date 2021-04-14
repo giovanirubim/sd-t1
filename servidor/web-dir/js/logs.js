@@ -1,4 +1,3 @@
-// let pageInfo = null;
 let time = 0;
 
 function div() {
@@ -56,28 +55,6 @@ function addMsg(msg) {
 	});
 }
 
-// async function load(page) {
-// 	$('.http-msg').remove();
-// 	let pages = $('.pages').html('');
-// 	pageInfo = await $.get(`/api/http-messages?page=${page}`);
-// 	const { nPages, pageIndex, messages } = pageInfo;
-// 	let a = pageIndex - 3;
-// 	let b = pageIndex + 3;
-// 	if (a < 0) {
-// 		a = 0;
-// 		b = pageIndex + 6;
-// 	}
-// 	if (b >= nPages) {
-// 		b = nPages - 1;
-// 		a = Math.max(0, b - 7)
-// 	}
-// 	for (let i=a; i<=b; ++i) {
-// 		pages.append(`<input type="button" value="${i+1}"${
-// 			i == pageIndex? ' disabled="true"': ''
-// 		}>\n`);
-// 	}
-// 	messages.forEach(addMsg);
-// }
 
 async function more() {
 	let array = await $.get('/api/http-messages?time=' + time);
@@ -88,21 +65,6 @@ async function more() {
 }
 
 $(document).ready(async function(){
-	// await load(0);
-	// $('body').on('click', 'input[type="button"]', async function(){
-	// 	let button = $(this);
-	// 	if (button.attr('disabled')) {
-	// 		return;
-	// 	}
-	// 	let val = button.val().toLowerCase();
-	// 	if (val === 'first') {
-	// 		await load(0);
-	// 	} else if (val === 'last') {
-	// 		await load(pageInfo.nPages - 1);
-	// 	} else {
-	// 		await load(val - 1);
-	// 	}
-	// });
 	$('#clear').on('click', () => $('.http-msg').remove());
 	$('#more').on('click', more);
 });
