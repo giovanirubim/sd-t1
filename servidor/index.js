@@ -19,6 +19,9 @@ const webDir = path.join(currentDir, 'web-dir');
 // Porta do servidor
 const port = process.env.PORT || 80;
 
+// Host do servidor
+const host = process.env.HOST || '0.0.0.0';
+
 // Função para o envio de resposta
 function send({ status, headers, body }) {
 	console.log('teste')
@@ -101,7 +104,7 @@ const server = http.createServer(function(request, response) {
 
 // Inicia servidor na porta especificada
 console.log('Port: ' + port);
-server.listen(port, function() {
+server.listen(port, host, function() {
 	// Servidor iniciado
 	console.log('Server started');
 });
