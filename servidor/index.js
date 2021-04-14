@@ -10,11 +10,8 @@ const path = require('path');
 // Módulo para inspecionar as mensagens http
 const inspect = require('./inspect');
 
-// Diretório raiz do projeto
-const currentDir = __dirname;
-
 // Diretório contendo o conteúdo WEB do servidor
-const webDir = path.join(currentDir, 'web-dir');
+const webDir = path.join(__dirname, 'web-dir');
 
 // Porta do servidor
 const port = process.env.PORT || 80;
@@ -24,7 +21,6 @@ const host = process.env.HOST || '0.0.0.0';
 
 // Função para o envio de resposta
 function send({ status, headers, body }) {
-	console.log('teste')
 	this.writeHead(status, headers);
 	if (body) {
 		this.write(body);
